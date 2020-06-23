@@ -1,0 +1,15 @@
+<div class="centered-content">
+    <div class="modal-box">
+        <h1>Add New Task</h1>
+        <input #inputTaskDesc class="input has-background-light" type="text" placeholder="Enter task...">
+        <br><br>
+        <div class="field is-grouped is-grouped-right">
+            <p class="control">
+                <a class="button" routerLink="../tasks">Cancel</a>
+            </p>
+            <p class="control">
+              <a class="button has-text-white is-primary" (click)='createNewTask(inputTaskDesc.value)'>Add</a>
+            </p>
+          </div>
+    </div>
+</div>
