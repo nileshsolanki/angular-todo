@@ -9,7 +9,7 @@ export class TaskService {
 
   constructor(private web: WebService) { }
 
-  domain: string = 'http://localhost:3000'
+  domain: string = 'https://ngtaskmanager.herokuapp.com'
 
   getLists = () => {
     return this.web.get( `${this.domain}/lists` );
