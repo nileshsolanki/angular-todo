@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../task.service';
 import { ActivatedRoute } from '@angular/router';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-task-view',
@@ -14,7 +15,9 @@ export class TaskViewComponent implements OnInit {
   tasks : any[] = [];
 
   ngOnInit(): void {
-   
+
+    document.getElementById('btn_newtask').addEventListener('mousedown', (e)=> console.log(e))
+
     this.route.params.subscribe( params => {
       const listId: string = params.listId;
       this.fetchLists();
@@ -34,6 +37,13 @@ export class TaskViewComponent implements OnInit {
     this.taskService.getTasks(listId).subscribe((tasks: any[]) => {
       this.tasks = tasks;
     })
+
+    
+    
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
   }
 
   handleTaskClick = (task: any) => {
