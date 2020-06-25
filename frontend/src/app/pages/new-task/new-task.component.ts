@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class NewTaskComponent implements OnInit {
 
+  errormsgs: string[] = [];
+
   constructor(
     private taskService: TaskService, 
     private route: ActivatedRoute,
@@ -18,6 +20,12 @@ export class NewTaskComponent implements OnInit {
 
 
   createNewTask = (taskDesc: string) => {
+
+    if(taskDesc.trim() === ''){
+      this.pushError('Task description cannot be empty');
+      return;
+    }
+
     this.route.params.subscribe( params => {
       const listId: string = params.listId;
       this.taskService.createTask(listId, {title: taskDesc}).subscribe( (task: any) => {
@@ -29,6 +37,9 @@ export class NewTaskComponent implements OnInit {
   }
 
 
-
+  pushError(message: string) {
+    this.errormsgs.push(message);
+    setTimeout(() => this.errormsgs.shift(), 4000);
+  }
 
 }

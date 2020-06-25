@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { TaskViewComponent } from './pages/task-view/task-view.component';
 import { NewListComponent } from './pages/new-list/new-list.component';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
+import { ToastComponent } from './notifications/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { NewTaskComponent } from './pages/new-task/new-task.component';
     TaskViewComponent,
     NewListComponent,
     NewTaskComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,4 +12,10 @@
             </p>
           </div>
     </div>
+
+
+    <div class="toastlist" *ngIf="errormsgs.length > 0">
+        <app-toast *ngFor="let msg of errormsgs" [message]="msg">
+        </app-toast>
+    </div>
 </div>

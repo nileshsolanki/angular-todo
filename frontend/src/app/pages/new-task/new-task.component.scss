@@ -10,3 +10,13 @@
         margin-bottom: 8px;
     }
 }
+
+.toastlist {
+    align-self: flex-end;
+    position: absolute;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
