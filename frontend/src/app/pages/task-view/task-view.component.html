@@ -2,7 +2,13 @@
     <div class="task-manager-container">
 
         <div class="sidebar has-background-white">
-            <h1 class="title has-text-primary">List</h1>
+            <div class="head-row">
+                <h1 class="title has-text-primary">List</h1>
+    
+                <button routerLink='/newlist' class="fab button is-primary">
+                    <img src="../../../assets/plus-icon.svg">
+                </button>
+            </div>
 
             <div class="list-menu">
                 <a class="list-menu-item" *ngFor="let list of lists" [routerLink]="['/lists', list._id, 'tasks']" routerLinkActive="isactive">
@@ -15,16 +21,14 @@
                 </a>
             </div>
 
-            <button routerLink='/newlist' class="fab button is-primary">
-                <img src="../../../assets/plus-icon.svg">
-            </button>
+            
 
         </div>
 
         <div class="task-list-container has-background-light">
             <h1 class="title has-text-primary">Tasks</h1>
 
-            <div cdkDropList class="task-list" (cdkDropListDropped)="drop($event)">
+            <div cdkDropList cdkDropListLockAxis="y" class="task-list" (cdkDropListDropped)="drop($event)">
                 
                 <div 
                       [class.completed]="task.completed"
@@ -32,6 +36,7 @@
                       (click)="handleTaskClick(task)" 
                       *ngFor="let task of tasks" cdkDrag>
                     <p>{{ task.title }}</p>
+                    <img cdkDragHandle src="../../../assets/drag_handle.svg" >
                 </div>
             </div>
             

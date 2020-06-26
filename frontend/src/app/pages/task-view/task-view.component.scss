@@ -14,7 +14,6 @@
     width: 30%;
     border-radius: 8px 0px 0px 8px;
     padding: 42px;
-
 }
 
 .task-list-container {
@@ -32,6 +31,31 @@
         bottom: 20px;
     }
 }
+
+
+@media (max-width: 600px){
+    .task-manager-container {
+        margin: 0;
+        height: 99.4%;
+        align-self: flex-start;
+        overflow-x: scroll;
+    }
+
+    .sidebar {
+        width: 90%;
+        min-width: 87%;
+        border-radius: 0;
+        z-index: 3;
+        // box-shadow: 0.2em 0px 0.5em 0 #bdbdbd;
+    }
+
+    .task-list-container {
+        min-width: 100%;
+        width: 100%;
+        border-radius: 0;
+    }
+}
+
 
 .title {
     font-family: 'Lato';
@@ -108,12 +132,23 @@
     overflow-y: scroll;
 
     .task {
+        display: flex;
         background-color: white;
-        padding: 15px 20px;
+        padding: 15px 5px 15px 20px;
         margin-top: 10px;
         border-radius: 5px;
         cursor: pointer;
         transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+        p {
+            flex-grow: 1;
+        }
+
+        img {
+            padding: 0.2em;
+            height: 1.5em;
+            align-self: center;
+        }
     
         &:not(.completed) {
     
@@ -139,11 +174,16 @@
 
 }
 
+.head-row {
+    display: flex;
+    justify-content: space-between;
+}
+
 .fab {
-    position: absolute;
-    align-self: flex-end;
+    position: relative;
+    top: -8px;
+    align-self: baseline;
     padding: 12px;
-    margin-top: -8px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -157,20 +197,30 @@
 
 .cdk-drag-preview {
     box-sizing: border-box;
-    border-radius: 4px;
+    border-radius: 5px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
     background: white;
     padding: 15px 20px;
+    display: flex;
+    align-items: center;
 
     &.completed {
         text-decoration: line-through;
     }
+
+    p {
+        flex-grow: 1;
+    }
+
+    img {
+        height: 1em;
+    }
 }
   
 .cdk-drag-placeholder {
-    opacity: 0%;
+    opacity: 0 !important;
 }
 
 .cdk-drag-animating {
