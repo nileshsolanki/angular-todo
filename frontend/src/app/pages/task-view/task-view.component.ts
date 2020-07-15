@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../task.service';
 import { ActivatedRoute } from '@angular/router';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, CdkDrag } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-task-view',
@@ -43,20 +43,41 @@ export class TaskViewComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<any[]>) {
+    
+    const task = this.tasks[event.previousIndex];
+    console.log("moved task", task);
+    this.taskService.persitIndices({...task}, event.previousIndex, event.currentIndex, this.tasks.length)
+      .subscribe( (c)=> {console.log(c)});
     moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
   }
 
   handleTaskClick = (task: any) => {
-    this.taskService
-    .toggleCompletionStatus(task._id, task._listId, {completed: !task.completed})
-    .subscribe( (list) => {
-      task.completed = !task.completed;
-      const idx = this.lists.findIndex( (listitem) => {
-        return listitem._id == task._listId;
-      })
+    task.completed = !task.completed;
+    
 
-      this.lists[idx] = list;
-    })
+    this.taskService
+    .toggleCompletionStatus(task._id, task._listId, {completed: task.completed})
+    .subscribe( 
+
+
+
+      (list) => {
+        const idx = this.lists.findIndex( (listitem) => {
+          return listitem._id == task._listId;
+        })
+
+        this.lists[idx] = list;
+      },
+
+
+
+      (error) => {
+        task.completed = !task.completed;
+      }
+
+
+
+    )
   }
 
 }
