@@ -9,8 +9,8 @@ export class TaskService {
 
   constructor(private web: WebService) { }
 
-  // domain: string = 'https://ngtaskmanager.herokuapp.com'
-  domain: string = 'http://localhost:3000';
+  domain: string = 'https://ngtaskmanager.herokuapp.com'
+  // domain: string = 'http://localhost:3000';
 
   getLists = () => {
     return this.web.get( `${this.domain}/lists` );
@@ -46,7 +46,7 @@ export class TaskService {
       total: total,
       factor: prevIdx - currIdx < 0 ? -1 : 1
     }
-    
+
     return this.web.patch(`${this.domain}/lists/${task._listId}/tasks/save`, payload);
   }
 
