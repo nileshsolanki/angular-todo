@@ -111,6 +111,10 @@ let verifySession = (req, res, next) => {
 
 /* LIST ROUTES */
 
+
+
+
+
 /**
  * GET /lists
  * Purpose: Get all lists
@@ -184,7 +188,8 @@ app.get('/lists/:listId/tasks', /*authenticate,*/ (req, res) => {
     // We want to return all tasks that belong to a specific list (specified by listId)
     Task.find({
         _listId: req.params.listId
-    }).then((tasks) => {
+    }).sort({index: 1})
+    .then((tasks) => {
         res.send(tasks);
     })
 });
@@ -204,16 +209,17 @@ app.post('/lists/:listId/tasks', /*authenticate,*/ (req, res) => {
         if (list) {
             // list object with the specified conditions was found
             // therefore the currently authenticated user can create new tasks
-            return true;
+            return list;
         }
-
+ 
         // else - the list object is undefined
         return false;
-    }).then((canCreateTask) => {
-        if (canCreateTask) {
+    }).then((list) => {
+        if (list) {
             let newTask = new Task({
                 title: req.body.title,
-                _listId: req.params.listId
+                _listId: req.params.listId,
+                index: list.total - 1
             });
             newTask.save().then((newTaskDoc) => {
                 res.send(newTaskDoc);
@@ -223,6 +229,38 @@ app.post('/lists/:listId/tasks', /*authenticate,*/ (req, res) => {
         }
     })
 })
+
+
+
+app.patch('/lists/:listId/tasks/save', (req, res) => {
+    Task.updateMany(
+        {
+            _listId: req.params.listId, 
+            // index: { $gte: req.body.start, $lte: req.body.end } ,
+            $and: [ {index: {$gte: req.body.start}}, {index: {$lte: req.body.end}}]
+        },
+
+        { $inc: {index: req.body.factor} }
+
+    ).then( (up) => {
+        return Task.findOneAndUpdate({_id: req.body.task._id}, {index: req.body.currIdx})
+                    .then( (task) => {
+                        console.log("moved task", task)
+                        res.json( { message: 'Updated successfully.' } )
+                    });
+        
+    }).catch( (err) => {
+        console.log(err)
+        res.status(400).json( { message: 'Update unsuccessful.' } )
+    })
+})
+
+
+
+
+
+
+
 
 /**
  * PATCH /lists/:listId/tasks/:taskId
@@ -256,7 +294,7 @@ app.patch('/lists/:listId/tasks/:taskId', /*authenticate,*/ (req, res) => {
                     new: false
                 }
             ).then((task) => {
-                if(task.completed != req.body.completed){
+                if(req.body.hasOwnProperty('completed') && task.completed != req.body.completed){
                     if(req.body.completed){
                         List.findOneAndUpdate({_id: req.params.listId}, { $inc: {complete: 1, incomplete: -1}}, {new:true})
                             .then((list) =>  res.json(list))
@@ -308,6 +346,9 @@ app.delete('/lists/:listId/tasks/:taskId', /*authenticate,*/ (req, res) => {
         }
     });
 });
+
+
+
 
 
 
